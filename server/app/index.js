@@ -15,7 +15,8 @@ app.use(session({
   secret: '1xwTr09', // or whatever you like
   // these options are recommended and reduce session concurrency issues
   resave: false,
-  saveUninitialized: false
+  saveUninitialized: false,
+  duration: (10000)
 }));
 
 app.use(function (req, res, next) {

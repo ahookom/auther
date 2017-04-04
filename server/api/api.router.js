@@ -23,9 +23,12 @@ router.post('/login', function(req, res, next){
     console.log('db response is',user);
     if(user){
       req.session.userId=user.id
-      res.send();
+
+      res.sendStatus(204);
+    } else{
+      res.status(401).send();
     }
-    res.status(404).send();
+
   })
   .catch(next)
 })

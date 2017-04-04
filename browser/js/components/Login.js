@@ -1,12 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { browserHistory } from 'react-router';
+import {validateCredentials} from '../redux/session.js';
 
 /* -----------------    COMPONENT     ------------------ */
 
 class Login extends React.Component {
   constructor(props) {
     super(props);
+    
     this.onLoginSubmit = this.onLoginSubmit.bind(this);
   }
 
@@ -14,6 +16,7 @@ class Login extends React.Component {
     const { message } = this.props;
     return (
       <div className="signin-container">
+        {this.props.attemptFailed? <div class="alert">Please enter valid credentials</div> : null};
         <div className="buffer local">
           <form onSubmit={this.onLoginSubmit}>
             <div className="form-group">
@@ -58,15 +61,20 @@ class Login extends React.Component {
   }
 
   onLoginSubmit(event) {
+    // post to the login route
+    // redirect if successful, or return to login if unsuccessful
+
+    console.log(event);
     const { message } = this.props;
     event.preventDefault();
-    console.log(`${message} isn't implemented yet`);
+    console.log("event target val: ", event.target.val)
+    validateCredentials(event.target.value)
   }
 }
 
 /* -----------------    CONTAINER     ------------------ */
 
-const mapState = () => ({ message: 'Log in' });
+const mapState = (state, ownProps) => ({ message: 'Log in', attemptFailed: state.session.attemptFailed });
 const mapDispatch = null;
 
 export default connect(mapState, mapDispatch)(Login);

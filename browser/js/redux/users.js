@@ -66,3 +66,5 @@ export const updateUser = (id, user) => dispatch => {
        .then(res => dispatch(update(res.data)))
        .catch(err => console.error(`Updating user: ${user} unsuccesful`, err));
 };
+
+// add dispatcher for login??
