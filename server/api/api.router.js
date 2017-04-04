@@ -24,7 +24,7 @@ router.post('/login', function(req, res, next){
     if(user){
       req.session.userId=user.id
 
-      res.sendStatus(204);
+      res.status(200).send(user);
     } else{
       res.status(401).send();
     }

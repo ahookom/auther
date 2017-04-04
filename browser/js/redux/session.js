@@ -33,14 +33,18 @@ export default function reducer (state = initialState, action) {
 /* ------------       DISPATCHERS     ------------------ */
 
 export const validateCredentials = (userInfoObj) => dispatch => {
+  console.log('made it into axios wrapper');
   axios.post('/api/login', userInfoObj)
        .then(res => {
+         console.log('response from server',res.data);
          if (res.data) {
+           console.log('accepted');
            dispatch(setUser(res.data));
            browserHistory.push('/');
          } else {
+           console.log('rejected');
            dispatch(reject());
          }
 
-       });
+       }).catch(console.error)
 };
