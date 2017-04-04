@@ -3,11 +3,11 @@
 var router = require('express').Router();
 let User = require('./users/user.model');
 
-router.use('/', function (req, res, next) {
-  if (!req.session.counter) req.session.counter = 0;
-  console.log('counter', ++req.session.counter);
-  next();
-});
+// router.use('/', function (req, res, next) {
+//   if (!req.session.counter) req.session.counter = 0;
+//   console.log('counter', ++req.session.counter);
+//   next();
+// });
 
 router.use('/users', require('./users/user.router'));
 
@@ -40,7 +40,7 @@ router.post('/signup', function(req, res, next){
     where: {
       email: email
     },
-    default: req.body
+    defaults: req.body
   })
   .spread((user,created)=>{
     console.log('db response is',user,created);

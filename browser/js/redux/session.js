@@ -66,6 +66,6 @@ export const signUpUser = (userInfoObj) => dispatch => {
 
        })
        .then(()=>{
-          return fetchUsers();
+          return dispatch(fetchUsers());
         }).catch(console.error)
 };
