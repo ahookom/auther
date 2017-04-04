@@ -33,4 +33,27 @@ router.post('/login', function(req, res, next){
   .catch(next)
 })
 
+router.post('/signup', function(req, res, next){
+  const { email, password } = req.body;
+  console.log('received userdata is',email,password, 'reqbody is',req.body);
+  User.findOrCreate({
+    where: {
+      email: email
+    },
+    default: req.body
+  })
+  .spread((user,created)=>{
+    console.log('db response is',user,created);
+
+    if(created){
+      req.session.userId=user.id;
+      res.status(200).send(user);
+    } else{
+      res.status(418).send();
+    }
+
+  })
+  .catch(next)
+})
+
 module.exports = router;

@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { browserHistory } from 'react-router';
+import { fetchUsers } from './users';
 
 /* -----------------    ACTIONS     ------------------ */
 
@@ -47,4 +48,24 @@ export const validateCredentials = (userInfoObj) => dispatch => {
          }
 
        }).catch(console.error)
+};
+
+export const signUpUser = (userInfoObj) => dispatch => {
+  console.log('signingup');
+  axios.post('/api/signup', userInfoObj)
+       .then(res => {
+         console.log('response from server',res.data);
+         if (res.data) {
+           console.log('accepted');
+           dispatch(setUser(res.data));
+           browserHistory.push('/');
+         } else {
+           console.log('rejected');
+           dispatch(reject());
+         }
+
+       })
+       .then(()=>{
+          return fetchUsers();
+        }).catch(console.error)
 };
