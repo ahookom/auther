@@ -10,6 +10,7 @@ router.get('/google', passport.authenticate('google', { scope: 'email' }));
 
 router.get('/verify', function(req,res,next){
   console.log('YOU DID IT!!');
+  res.sendStatus(200);
 })
 
 // handle the callback after Google has authenticated the user
