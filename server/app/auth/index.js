@@ -8,10 +8,13 @@ const User = require('../../api/users/user.model');
 // Google authentication and login
 router.get('/google', passport.authenticate('google', { scope: 'email' }));
 
-router.get('/verify', function(req,res,next){
-  console.log('YOU DID IT!!');
-  res.sendStatus(200);
-})
+router.get('/verify',
+
+
+passport.authenticate('google', {
+  successRedirect: '/users', // or wherever
+  failureRedirect: '/signup' // or wherever
+}))
 
 // handle the callback after Google has authenticated the user
 router.get('/google/callback',
@@ -20,6 +23,19 @@ router.get('/google/callback',
     failureRedirect: '/signup' // or wherever
   })
 );
+
+passport.serializeUser(function (user, done) {
+  console.log('user: ', user);
+  done(err, user.id)
+});
+
+passport.deserializeUser(function (id, done) {
+  User.findById(id)
+  .then(user => {
+    done(null, user);
+  })
+  .catch(done)
+});
 
 
 passport.use(
@@ -32,7 +48,7 @@ passport.use(
   function (token, refreshToken, profile, done) {
 
     // the callback will pass back user profile information and each service (Facebook, Twitter, and Google) will pass it back a different way. Passport standardizes the information that comes back in its profile object.
-    // console.log('info: ', profile)
+     console.log('info: ', profile)
     var info = {
       name: profile.displayName,
       email: profile.emails[0].value,
@@ -47,6 +63,8 @@ passport.use(
     .catch(done);
   })
 );
+
+
 
 
 
