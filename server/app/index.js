@@ -3,12 +3,15 @@
 var app = require('express')();
 var path = require('path');
 var session = require('express-session');
-
+var passport = require('passport');
 // "Enhancing" middleware (does not send response, server-side effects only)
 
 app.use(require('./logging.middleware'));
 
 app.use(require('./body-parsing.middleware'));
+
+
+
 
 app.use(session({
   // this mandatory configuration ensures that session IDs are not predictable
@@ -19,13 +22,16 @@ app.use(session({
   duration: (10000)
 }));
 
+app.use(passport.initialize());
+app.use(passport.session());
+
 app.use(function (req, res, next) {
   console.log('session', req.session);
   next();
 });
 
 // "Responding" middleware (may send a response back to client)
-
+app.use('/auth', require('./auth'));
 app.use('/api', require('../api/api.router'));
 
 var validFrontendRoutes = ['/', '/stories', '/users', '/stories/:id', '/users/:id', '/signup', '/login'];
